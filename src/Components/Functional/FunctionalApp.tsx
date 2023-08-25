@@ -1,14 +1,9 @@
-
-
-
 import { FunctionalGameBoard } from './FunctionalGameBoard';
 import { FunctionalScoreBoard } from './FunctionalScoreBoard';
 import { FunctionalFinalScore } from './FunctionalFinalScore';
 
 import { useState } from 'react';
 import { initialFishes } from '../../assets/initialFishes.ts';
-
-
 
 const fishArray = initialFishes;
 const remainingFish = initialFishes.map((fish) => fish.name);
@@ -17,7 +12,7 @@ export function FunctionalApp() {
   const [correctScore, setCorrectScore] = useState(0);
   const [totalScore, setTotalScore] = useState(0);
 
-  const handleGuess = (guess:string) => {
+  const handleGuess = (guess: string) => {
     const currentFish = fishArray[totalScore];
 
     if (guess.toLowerCase().trim() === currentFish.name.toLowerCase()) {
@@ -51,34 +46,3 @@ export function FunctionalApp() {
     </>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* import { FunctionalGameBoard } from "./FunctionalGameBoard";
-import { FunctionalScoreBoard } from "./FunctionalScoreBoard";
-import { FunctionalFinalScore } from "./FunctionalFinalScore";
-
-export function FunctionalApp() {
-  return (
-    <>
-      <FunctionalScoreBoard />
-      <FunctionalGameBoard />
-      {false && <FunctionalFinalScore />}
-    </>
-  );
-}
- */
