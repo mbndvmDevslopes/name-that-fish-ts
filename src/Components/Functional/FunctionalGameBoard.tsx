@@ -1,37 +1,55 @@
-import "./styles/game-board.css";
-import { Images } from "../../assets/Images";
 
-const initialFishes = [
-  {
-    name: "trout",
-    url: Images.trout,
-  },
-  {
-    name: "salmon",
-    url: Images.salmon,
-  },
-  {
-    name: "tuna",
-    url: Images.tuna,
-  },
-  {
-    name: "shark",
-    url: Images.shark,
-  },
-];
+import './styles/game-board.css';
+import { useState } from 'react';
 
-export function FunctionalGameBoard() {
-  const nextFishToName = initialFishes[0];
+
+type Fish = {
+  name: string;
+  url: string;
+}
+type GameBoardProps= {
+  handleGuess: (param: string) => void;
+  fishArray:Fish[];
+}
+
+
+
+const  FunctionalGameBoard: React.FC<GameBoardProps>=({ handleGuess, fishArray }) => {
+  const [guess, setGuess] = useState('');
+  const [currentFishIndex, setCurrentFishIndex] = useState(0);
+
+  const currentFish = fishArray[currentFishIndex];
+
+  const handleGuessChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+    setGuess(e.target.value);
+  };
+
+  const handleGuessSubmit = (e:React.FormEvent) => {
+    e.preventDefault();
+    handleGuess(guess);
+
+    setCurrentFishIndex(currentFishIndex + 1);
+
+    setGuess('');
+  };
+
   return (
     <div id="game-board">
       <div id="fish-container">
-        <img src={nextFishToName.url} alt={nextFishToName.name} />
+        <img src={currentFish?.url} alt={currentFish?.name} />
       </div>
-      <form id="fish-guess-form">
+      <form id="fish-guess-form" onSubmit={handleGuessSubmit}>
         <label htmlFor="fish-guess">What kind of fish is this?</label>
-        <input type="text" name="fish-guess" />
+        <input
+          type="text"
+          value={guess}
+          name="fish-guess"
+          onChange={handleGuessChange}
+        />
         <input type="submit" />
       </form>
     </div>
   );
 }
+
+export {FunctionalGameBoard}
