@@ -1,0 +1,140 @@
+
+
+
+
+import React, { useState } from 'react';
+import GameBoard from './GameBoard';
+import Scoreboard from './Scoreboard';
+
+function App() {
+  const [recentGuess, setRecentGuess] = useState('');
+  const [totalScore, setTotalScore] = useState(0);
+  const [correctScore, setCorrectScore] = useState(0);
+
+  // Assuming you have a list of fish objects to guess from.
+  const fishList = [
+    { id: 1, name: 'Salmon' },
+    { id: 2, name: 'Tuna' },
+    // Add more fish objects as needed.
+  ];
+
+  const handleGuessSubmit = (guess) => {
+    setRecentGuess(guess);
+
+    const currentFish = fishList[totalScore]; // Get the current fish based on total guesses.
+
+    // Check if the guess matches the current fish's name.
+    if (guess.toLowerCase() === currentFish.name.toLowerCase()) {
+      setCorrectScore(correctScore + 1);
+    }
+
+    setTotalScore(totalScore + 1);
+  };
+
+  return (
+    <div>
+      <GameBoard onGuessSubmit={handleGuessSubmit} />
+      <Scoreboard recentGuess={recentGuess} totalScore={totalScore} correctScore={correctScore} />
+    </div>
+  );
+}
+
+
+
+
+
+
+import React, { useState } from 'react';
+import GameBoard from './GameBoard';
+import Scoreboard from './Scoreboard';
+
+function App() {
+  const [recentGuess, setRecentGuess] = useState('');
+  const [totalScore, setTotalScore] = useState(0);
+  const [correctScore, setCorrectScore] = useState(0);
+
+  // Assuming you have a list of fish objects to guess from.
+  const fishList = [
+    { id: 1, name: 'Salmon' },
+    { id: 2, name: 'Tuna' },
+    // Add more fish objects as needed.
+  ];
+
+  const handleGuessSubmit = (guess) => {
+    setRecentGuess(guess);
+
+    const currentFish = fishList[totalScore]; // Get the current fish based on total guesses.
+
+    // Check if the guess matches the current fish's name.
+    if (guess.toLowerCase() === currentFish.name.toLowerCase()) {
+      setCorrectScore(correctScore + 1);
+    }
+
+    setTotalScore(totalScore + 1);
+  };
+
+  return (
+    <div>
+      <GameBoard onGuessSubmit={handleGuessSubmit} />
+      <Scoreboard recentGuess={recentGuess} totalScore={totalScore} correctScore={correctScore} />
+    </div>
+  );
+}
+
+export default App;
+
+
+import React, { useState } from 'react';
+
+function GameBoard({ onGuessSubmit, fishList }) {
+  const [guess, setGuess] = useState('');
+  const [currentFishIndex, setCurrentFishIndex] = useState(0); // Start with the first fish.
+
+  const handleGuessChange = (event) => {
+    setGuess(event.target.value);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    onGuessSubmit(guess);
+
+    // Move to the next fish for the next guess.
+    setCurrentFishIndex(currentFishIndex + 1);
+
+    setGuess('');
+  };
+
+  // Get the current fish object based on the currentFishIndex.
+  const currentFish = fishList[currentFishIndex];
+
+  return (
+    <div>
+      <form onSubmit={handleSubmit}>
+        <p>Guess the fish: {currentFish.name}</p>
+        <input
+          type="text"
+          value={guess}
+          onChange={handleGuessChange}
+          placeholder="Enter your guess"
+        />
+        <button type="submit">Submit Guess</button>
+      </form>
+    </div>
+  );
+}
+
+export default GameBoard;
+
+import React from 'react';
+
+function Scoreboard({ recentGuess, totalScore, correctScore }) {
+  return (
+    <div>
+      <p>Recent Guess: {recentGuess}</p>
+      <p>Total Score: {totalScore}</p>
+      <p>Correct Score: {correctScore}</p>
+    </div>
+  );
+}
+
+export default Scoreboard;

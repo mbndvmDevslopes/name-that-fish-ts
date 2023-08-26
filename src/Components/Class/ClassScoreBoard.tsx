@@ -2,7 +2,7 @@ import { Component } from 'react';
 import './styles/score-board.css';
 
 type ScoreBoardProps = {
-  remainingFish: string[];
+  fish: string[];
   correctCount: number;
   totalCount: number;
 };
@@ -15,7 +15,7 @@ class ClassScoreBoard extends Component<ScoreBoardProps> {
       <div id="score-board">
         <div>Incorrect 🔻: {incorrectCount}</div>
         <div id="choices-left">
-          {this.props.remainingFish.map((answer) => (
+          {this.props.fish.slice(this.props.totalCount).map((answer) => (
             <div key={answer} className="choice">
               {answer}
             </div>

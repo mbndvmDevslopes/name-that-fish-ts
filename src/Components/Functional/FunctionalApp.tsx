@@ -5,39 +5,41 @@ import { FunctionalFinalScore } from './FunctionalFinalScore';
 import { useState } from 'react';
 import { initialFishes } from '../../assets/initialFishes.ts';
 
-const fishArray = initialFishes;
-const remainingFish = initialFishes.map((fish) => fish.name);
-
 export function FunctionalApp() {
   const [correctScore, setCorrectScore] = useState(0);
   const [totalScore, setTotalScore] = useState(0);
 
+  const fishNames = initialFishes.slice(totalScore).map((fish) => fish.name);
+
+  const gameOver = fishNames.length < 1 ? true : false;
+
   const handleGuess = (guess: string) => {
-    const currentFish = fishArray[totalScore];
+    const currentFish = initialFishes[totalScore];
 
     if (guess.toLowerCase().trim() === currentFish.name.toLowerCase()) {
       setCorrectScore(correctScore + 1);
     }
 
     setTotalScore(totalScore + 1);
-
-    remainingFish.splice(0, 1);
   };
 
   return (
     <>
-      {remainingFish.length > 0 && (
+      {!gameOver && (
         <FunctionalScoreBoard
-          remainingFish={remainingFish}
+          remainingFish={fishNames}
           totalScore={totalScore}
           correctScore={correctScore}
         />
       )}
-      {remainingFish.length > 0 && (
-        <FunctionalGameBoard handleGuess={handleGuess} fishArray={fishArray} />
+      {!gameOver && (
+        <FunctionalGameBoard
+          handleGuess={handleGuess}
+          fishArray={initialFishes}
+        />
       )}
 
-      {remainingFish.length < 1 && (
+      {gameOver && (
         <FunctionalFinalScore
           totalScore={totalScore}
           correctScore={correctScore}

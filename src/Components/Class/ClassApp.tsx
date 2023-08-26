@@ -9,43 +9,48 @@ type ClassAppState = {
   correctCount: number;
 };
 
-const remainingFish: string[] = initialFishes.map((fish) => fish.name);
-
-export class ClassApp extends Component<ClassAppState> {
+export class ClassApp extends Component<Record<string, never>, ClassAppState> {
   state: ClassAppState = {
     totalCount: 0,
     correctCount: 0,
   };
+
+  fishNames = initialFishes.map((fish) => fish.name);
+
+  gameOver = false;
 
   handleGuess = (guess: string) => {
     const currentFish = initialFishes[this.state.totalCount];
 
     if (guess.toLowerCase().trim() === currentFish.name.toLowerCase()) {
       this.setState({ correctCount: this.state.correctCount + 1 });
+      this.setState({ totalCount: this.state.totalCount + 1 });
+    } else {
+      this.setState({ totalCount: this.state.totalCount + 1 });
     }
-    this.setState({ totalCount: this.state.totalCount + 1 });
 
-    remainingFish.splice(0, 1);
+    this.gameOver = this.state.totalCount === 3 ? true : false;
   };
+
   render() {
     return (
       <>
         <>
-          {remainingFish.length > 0 && (
+          {!this.gameOver && (
             <ClassScoreBoard
               totalCount={this.state.totalCount}
               correctCount={this.state.correctCount}
-              remainingFish={remainingFish}
+              fish={this.fishNames}
             />
           )}
-          {remainingFish.length > 0 && (
+          {!this.gameOver && (
             <ClassGameBoard
               handleGuess={this.handleGuess}
               fishArray={initialFishes}
             />
           )}
         </>
-        {remainingFish.length < 1 && (
+        {this.gameOver && (
           <ClassFinalScore
             totalCount={this.state.totalCount}
             correctCount={this.state.correctCount}
